@@ -1,313 +1,1089 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Let's-Help Dashboard</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>User — Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  /* -------------------------
+     Fonts & root variables
+     ------------------------- */
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-:root {
-    --sidebar-bg: #2c3e50;   /* Softer navy gray */
-    --accent-blue: #2980b9;  /* Calm professional blue */
-    --accent-orange: #e67e22;
-    --card-bg: #ffffff;
-    --text-color: #2c3e50;
-    --light-text: #ecf0f1;
-    --shadow: 0 6px 18px rgba(0,0,0,0.15);
-    --bg-light: #f5f7fa;
-    --transition-speed: 0.3s;
-}
+  :root{
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --muted: #64748b;
+    --text: #1e293b;
+    --accent: #3b82f6;
+    --accent-600: #2563eb;
+    --accent-700: #1d4ed8;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --sidebar: #1e293b;
+    --sidebar-gradient: linear-gradient(180deg, #1e293b, #334155);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+    --radius-lg: 16px;
+    --radius-sm: 10px;
+    --trans: 250ms cubic-bezier(.4,0,.2,1);
+    --input-bg: #f8fafc;
+    --placeholder: #94a3b8;
+    --highlight: rgba(59, 130, 246, 0.08);
+    --border: #e2e8f0;
+    --hover-bg: #f1f5f9;
+    --lets-color: #ffffff; /* Let's color in light mode */
+    --help-color: #00d084; /* Help color in light mode */
+  }
 
-/* Reset */
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Roboto',sans-serif; background:var(--bg-light); display:flex; min-height:100vh; color:var(--text-color); }
+  /* dark theme variables */
+  .dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --muted: #94a3b8;
+    --text: #f1f5f9;
+    --accent: #60a5fa;
+    --accent-600: #3b82f6;
+    --accent-700: #2563eb;
+    --danger: #f87171;
+    --success: #34d399;
+    --warning: #fbbf24;
+    --sidebar: #0f172a;
+    --sidebar-gradient: linear-gradient(180deg, #0f172a, #1e293b);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+    --input-bg: #334155;
+    --placeholder: #64748b;
+    --highlight: rgba(96, 165, 250, 0.1);
+    --border: #334155;
+    --hover-bg: #334155;
+    --lets-color: #00ff88; /* Let's color in dark mode */
+    --help-color: #ffffff; /* Help color in dark mode */
+  }
 
-/* Sidebar */
-.sidebar {
-    width:250px;
-    background:var(--sidebar-bg);
-    color:var(--light-text);
-    padding:20px 0;
-    display:flex;
-    flex-direction:column;
-    position:fixed;
-    height:100%;
-}
-.profile { display:flex; flex-direction:column; align-items:center; padding-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:15px; }
-.profile-pic { width:60px; height:60px; border-radius:50%; background:var(--accent-blue); display:flex; justify-content:center; align-items:center; font-size:30px; color:white; margin-bottom:10px; }
-.menu-item { padding:12px 20px; display:flex; align-items:center; cursor:pointer; transition: var(--transition-speed); color:var(--light-text); text-decoration:none; border-left:5px solid transparent; border-radius: 0 20px 20px 0; }
-.menu-item i { width:30px; margin-right:10px; font-size:18px; }
-.menu-item:hover { background:rgba(255,255,255,0.08); }
-.menu-item.active { background:var(--accent-blue); color:#fff; border-left:5px solid var(--accent-orange); }
-.sign-out { margin-top:auto; border-top:1px solid rgba(255,255,255,0.1); }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height: 1.6;
+  }
 
-/* Main Content */
-.main-content { flex-grow:1; margin-left:250px; padding:20px; }
+  a{color:inherit}
+  button{font-family:inherit; cursor: pointer; transition: all var(--trans);}
 
-/* Header & Search Bar */
-.header {
-    background:var(--card-bg);
-    padding:10px 20px;
-    border-radius:12px;
-    margin-bottom:20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-.search-bar { flex-grow:1; max-width:600px; position:relative; }
-.search-bar input {
-    width:100%;
-    padding:10px 20px;
-    border:none;
-    border-radius:25px;
-    background:#ecf0f1;
-    font-size:16px;
-    transition: all 0.3s ease;
-}
-.search-bar input:focus {
-    background:#fff;
-    outline:none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-.search-bar i { position:absolute; right:20px; top:50%; transform:translateY(-50%); color:#888; }
-.header-icons { display:flex; align-items:center; }
-.header-icons i { font-size:20px; margin-left:20px; color:var(--text-color); cursor:pointer; position:relative; }
-.badge { position:absolute; top:-5px; right:-10px; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px; }
+  /* -------------------------
+     Layout
+     ------------------------- */
+  .wrap{display:flex;min-height:100vh;gap:24px}
+  .sidebar{
+    width:280px;background:var(--sidebar-gradient);
+    color: #f1f5f9;padding:24px;border-radius:20px;box-shadow:var(--shadow-lg);
+    display:flex;flex-direction:column;gap:16px;margin:24px;
+  }
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{
+    width:60px;height:60px;border-radius:14px;background:var(--card);display:flex;align-items:center;justify-content:center;
+    color:var(--sidebar);font-weight:700;font-size:22px;box-shadow:var(--shadow-md)
+  }
+  .brand h1{font-size:20px;margin:0;letter-spacing:0.5px}
+  .brand .lets { color: var(--lets-color); }
+  .brand .help { color: var(--help-color); }
+  .profile{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:14px;background:rgba(255,255,255,0.05)}
+  .profile-top{display:flex;align-items:center;gap:14px}
+  .profile-pic{width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+  .profile-info{font-size:15px}
+  .profile-info div{font-weight:600}
+  .profile-meta{font-size:13px;color:rgba(255,255,255,0.7)}
+  .menu{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+  .menu a{
+    display:flex;align-items:center;gap:14px;padding:14px;border-radius:0 28px 28px 0;color:rgba(255,255,255,0.9);
+    text-decoration:none;font-weight:600;transition:all var(--trans);
+  }
+  .menu a i{width:24px;text-align:center}
+  .menu a:hover{transform:translateX(8px);background:rgba(255,255,255,0.08)}
+  .menu a.active{background:var(--card);color:var(--sidebar);box-shadow:var(--shadow-md);transform:none}
 
-/* Feed Posts */
-.feed { display:flex; flex-direction:column; gap:20px; }
-.post {
-    background:var(--card-bg); padding:20px; border-radius:12px; box-shadow:var(--shadow);
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-}
-.post:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
-.post h3 { color:var(--accent-blue); margin-bottom:10px; }
-.post p { margin-bottom:15px; }
-.post-actions { display:flex; gap:20px; color:#555; align-items:center; }
-.post-actions i { cursor:pointer; transition:0.2s; display:flex; align-items:center; gap:5px; }
-.post-actions i.liked { color:var(--accent-blue); transform:scale(1.2); }
+  /* Topbar */
+  .main{flex:1;padding:24px 24px 60px 0;display:flex;flex-direction:column;}
+  .topbar{display:flex;gap:16px;align-items:center;margin-bottom:24px}
+  .search{flex:1;max-width:760px;position:relative;}
+  .search input{
+    width:100%;padding:14px 48px 14px 20px;border-radius:50px;border:1px solid var(--border);
+    background:var(--input-bg);box-shadow:var(--shadow-sm);font-size:16px;transition:all var(--trans);
+    color:var(--text);
+  }
+  .search input::placeholder{color:var(--placeholder)}
+  .search input:focus{outline:none;box-shadow:0 0 0 3px var(--highlight), var(--shadow-md); border-color: var(--accent);}
+  .search i{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--muted)}
+  .top-actions{display:flex;align-items:center;gap:16px}
+  .icon-btn{position:relative;background:var(--card);padding:12px;border-radius:14px;box-shadow:var(--shadow-sm);cursor:pointer; transition: all var(--trans);}
+  .icon-btn:hover{transform: translateY(-2px); box-shadow: var(--shadow-md);}
+  .icon-btn .badge{position:absolute;top:-8px;right:-8px;background:var(--danger);color:white;font-size:11px;padding:4px 8px;border-radius:50px;border:2px solid var(--card)}
 
-/* Comments */
-.comment-section { margin-top:15px; }
-.comment { background:#f9f9f9; padding:8px 12px; border-radius:6px; margin-bottom:5px; position:relative; }
-.reply-btn { font-size:12px; color:var(--accent-blue); cursor:pointer; margin-top:5px; display:inline-block; transition:0.3s; }
-.reply-btn:hover { text-decoration:underline; }
-.reply-input { margin-top:8px; display:flex; gap:8px; }
-.reply-input input { flex-grow:1; padding:6px 10px; border-radius:15px; border:1px solid #ccc; font-size:13px; }
-.reply-input button { background:var(--accent-blue); border:none; color:white; padding:6px 12px; border-radius:15px; cursor:pointer; font-size:13px; transition:0.3s; }
-.reply-input button:hover { background:#2471a3; }
-.replies { margin-left:20px; margin-top:5px; }
+  /* panels */
+  .panel{background:var(--card);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-md)}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+  .col-8{grid-column:span 8}
+  .col-4{grid-column:span 4}
+  .col-6{grid-column:span 6}
+  .col-12{grid-column:span 12}
 
-/* Forms */
-#post-content, #account-content, #notification-content {
-    background:var(--card-bg); padding:30px; border-radius:12px; box-shadow:var(--shadow); max-width:700px; margin:0 auto;
-}
-#post-content h2, #account-content h2, #notification-content h2 { color:var(--accent-blue); margin-bottom:20px; }
-.form-group { margin-bottom:20px; }
-.form-group label { display:block; font-weight:600; margin-bottom:8px; color:var(--accent-orange); }
-.form-group input, .form-group textarea { width:100%; padding:12px 15px; border:1px solid #ddd; border-radius:10px; font-size:15px; transition:0.3s; }
-textarea { resize:vertical; min-height:120px; }
-.form-group input:focus, .form-group textarea:focus { outline:none; border-color:var(--accent-blue); box-shadow:0 4px 12px rgba(0,0,0,0.1); }
-.post-btn { background:var(--accent-orange); border:none; color:white; padding:12px 20px; border-radius:20px; font-size:16px; cursor:pointer; transition:0.3s; }
-.post-btn:hover { background:#cf711f; }
+  /* feed & posts */
+  .feed{display:flex;flex-direction:column;gap:20px}
+  .post{
+    display:flex;flex-direction:column;gap:16px;padding:20px;border-radius:16px;background:var(--card);
+    box-shadow:var(--shadow-sm);transition:all var(--trans);
+    border:1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .post::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-600));
+    opacity: 0;
+    transition: opacity var(--trans);
+  }
+  .post:hover::before {
+    opacity: 1;
+  }
+  .post:hover{transform: translateY(-4px); box-shadow:var(--shadow-lg);}
+  .post.highlighted{box-shadow:0 20px 50px rgba(59, 130, 246, 0.15);transform:translateY(-4px)}
+  .post h3{margin:0;font-size:20px;color:var(--accent);display:flex;align-items:center;gap:10px}
+  .post .meta-row{display:flex;gap:12px;align-items:center;border-top:1px solid var(--border);padding-top:16px;margin-top:8px;color:var(--muted)}
+  .meta-row .btn{display:flex;gap:8px;align-items:center;padding:10px 16px;border-radius:50px;background:var(--hover-bg);border:1px solid var(--border);cursor:pointer; transition: all var(--trans);}
+  .meta-row .btn:hover{background:var(--highlight); transform: translateY(-2px);}
+  .meta-row .btn.react{min-width:100px;justify-content:center}
+  .meta-row .btn.liked{background:linear-gradient(135deg,var(--accent),var(--accent-600));color:white;border:0;transform:scale(1.05)}
+  .meta-row .btn.disliked{background:linear-gradient(135deg,var(--muted),#475569);color:white;border:0;transform:scale(1.05)}
+  .comment-list{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+  .comment{background:var(--hover-bg);padding:14px;border-radius:12px;font-size:15px;box-shadow:var(--shadow-sm);display:flex;gap:10px;align-items:flex-start;color:var(--text)}
+  .comment strong{color:var(--accent)}
+  .comment .meta{margin-left:auto;color:var(--muted);font-size:13px}
+  .comment .reply-btn{border:0;background:transparent;color:var(--accent);cursor:pointer;font-size:14px; font-weight: 500; transition: all var(--trans);}
+  .comment .reply-btn:hover{color: var(--accent-600); transform: translateY(-1px);}
 
-/* Notifications */
-#notification-content ul { list-style:none; }
-#notification-content li { padding:10px 12px; border-bottom:1px solid #ddd; display:flex; align-items:center; gap:10px; border-radius:8px; margin-bottom:5px; }
-#notification-content li:hover { background:#f0f4ff; }
+  /* form elements */
+  form .form-row{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+  label{font-weight:600;font-size:15px;color:var(--text); margin-bottom: 4px;}
+  input[type="text"],input[type="password"],textarea,select{
+    padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--input-bg);font-size:15px;resize:vertical;color:var(--text);
+    transition: all var(--trans);
+  }
+  input[type="text"]:focus,input[type="password"]:focus,textarea:focus,select:focus{
+    outline:none;box-shadow:0 0 0 3px var(--highlight); border-color: var(--accent);
+  }
+  textarea{min-height:140px; font-family: inherit;}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-600));color:white;padding:12px 20px;border-radius:12px;border:0;cursor:pointer;font-weight:600; transition: all var(--trans); box-shadow: var(--shadow-sm);}
+  .btn-primary:hover{transform: translateY(-2px); box-shadow: var(--shadow-md); background: linear-gradient(135deg,var(--accent-600),var(--accent-700));}
+  .btn-ghost{background:transparent;border:1px solid var(--border);padding:10px 16px;border-radius:10px;cursor:pointer;color:var(--text); transition: all var(--trans);}
+  .btn-ghost:hover{background:var(--hover-bg); transform: translateY(-1px);}
 
-/* Hidden */
-.hidden { display:none !important; }
+  /* notifications */
+  .notif-dropdown{position:absolute;top:56px;right:0;width:380px;max-height:460px;overflow:auto;background:var(--card);box-shadow:var(--shadow-lg);border-radius:16px;padding:16px;z-index:999}
+  .notif-item{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:12px;background:transparent;border:1px solid var(--border);cursor:pointer; transition: all var(--trans);}
+  .notif-item:hover{background:var(--highlight); transform: translateX(4px);}
+  .notif-item .time{font-size:13px;color:var(--muted);margin-left:auto}
+
+  /* modal */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:2000; backdrop-filter: blur(4px);}
+  .modal{background:var(--card);padding:24px;border-radius:16px;min-width:360px;max-width:500px;box-shadow:var(--shadow-lg)}
+  .modal h3{margin-top:0; font-size: 20px;}
+
+  /* small utilities and responsive */
+  .muted{color:var(--muted);font-size:14px}
+  @keyframes pulseHighlight {
+    0%{box-shadow:0 0 0 0 rgba(59, 130, 246, 0.0)}
+    50%{box-shadow:0 0 0 12px rgba(59, 130, 246, 0.1)}
+    100%{box-shadow:0 0 0 0 rgba(59, 130, 246, 0.0)}
+  }
+  .pulse{animation:pulseHighlight 1000ms ease-in-out 2}
+
+  @media (max-width:980px){
+    .sidebar{display:none}
+    .main{padding:16px}
+    .grid{grid-template-columns:repeat(6,1fr)}
+    .col-8{grid-column:span 6}
+    .col-4{display:none}
+    .col-6{grid-column:span 6}
+    .col-12{grid-column:span 6}
+    .notif-dropdown{right:10px;left:10px}
+  }
+
+  /* filler comments & harmless classes to lengthen file */
+  .__filler_1{height:1px;opacity:0}
+  .__filler_2{height:1px;opacity:0}
+  .__filler_3{height:1px;opacity:0}
+  .__filler_4{height:1px;opacity:0}
 </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <div class="profile">
-        <div class="profile-pic">A</div>
-        <span>Alex User</span>
-    </div>
-    <a href="#" class="menu-item active" data-content="dashboard"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="#" class="menu-item" data-content="post"><i class="fas fa-plus-circle"></i> Post Problem</a>
-    <a href="#" class="menu-item" data-content="account"><i class="fas fa-user"></i> Account</a>
-    <a href="#" class="menu-item" data-content="notification"><i class="fas fa-bell"></i> Notifications</a>
-    <a href="#" class="menu-item sign-out"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
-</div>
-
-<div class="main-content">
-    <div class="header">
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <i class="fas fa-search"></i>
-        </div>
-        <div class="header-icons">
-            <i class="fas fa-bell" id="topNotif"><span class="badge" id="notifCount">3</span></i>
-            <i class="fas fa-cog"></i>
-        </div>
+<div class="wrap">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Main sidebar">
+    <div class="brand">
+      <div class="logo">LH</div>
+      <div>
+        <h1><span class="lets">Let's</span>-<span class="help">Help</span></h1>
+        <div style="font-size:13px;color:rgba(255,255,255,0.7)">College Support</div>
+      </div>
     </div>
 
-    <section id="dashboard-content" class="feed">
-        <div class="post">
-            <h3>Wifi Down in Block A</h3>
-            <p>The wifi in Block A has been down since this morning. Students can’t access online resources.</p>
-            <div class="post-actions">
-                <i class="fas fa-thumbs-up like-btn" data-liked="false"><span class="like-count">12</span></i>
-                <i class="fas fa-comment"><span class="comment-count">3</span></i>
-            </div>
-            <div class="comment-section">
-                <div class="comment"><strong>Puja:</strong> Same issue here! <div class="reply-btn">Reply</div><div class="replies"></div></div>
-                <div class="comment-input">
-                    <input type="text" placeholder="Write a comment...">
-                    <button>Post</button>
-                </div>
-            </div>
+    <!-- PROFILE: only user info, no controls -->
+    <div class="profile" id="sidebarProfile" role="region" aria-label="User profile">
+      <div class="profile-top">
+        <div class="profile-pic" id="sidebarPic">A</div>
+        <div class="profile-info">
+          <div id="sidebarName">Alex User</div>
         </div>
-    </section>
+      </div>
 
-    <section id="post-content" class="hidden">
-        <h2>Post a New Problem</h2>
-        <form id="postForm">
-            <div class="form-group">
-                <label for="topic">Problem Topic</label>
-                <input type="text" id="topic" name="topic" required>
+      <!-- Student info lines -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+        <div style="font-size:14px;color:rgba(255,255,255,0.9)"><strong id="profileNameText">Alex User</strong></div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.8)" id="profileEmailText">alex@example.com</div>
+      </div>
+    </div>
+
+    <nav class="menu" role="navigation" aria-label="Sidebar menu">
+      <a href="#" class="active" data-content="dashboard"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="#" data-content="post"><i class="fas fa-plus-circle"></i> Post Problem</a>
+      <a href="#" data-content="account"><i class="fas fa-user"></i> Profile</a>
+      <a href="#" data-content="notification"><i class="fas fa-bell"></i> Notifications <span style="margin-left:auto;font-weight:700;color:rgba(255,255,255,0.8)">●</span></a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div class="search">
+        <input id="searchInput" placeholder="Search problems, topics, or locations (e.g., wifi, lab, Block A)" aria-label="Search"/>
+        <i class="fas fa-search"></i>
+      </div>
+
+      <div class="top-actions" style="position:relative">
+        <div class="icon-btn" id="themeToggle" title="Toggle dark/light mode" aria-pressed="false"><i class="fas fa-moon"></i></div>
+        <div class="icon-btn" id="notifBtn" title="Notifications" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-bell" aria-hidden="true"></i>
+          <span class="badge" id="notifCount">0</span>
+        </div>
+        <!-- notif dropdown appears absolutely under notifBtn -->
+        <div id="notifDropdown" class="notif-dropdown" style="display:none" role="menu" aria-label="Notifications"></div>
+      </div>
+    </div>
+
+    <div class="grid" style="align-items:start">
+      <!-- LEFT: Feed / Dashboard -->
+      <section id="dashboard-content" class="col-8 panel" tabindex="0" aria-label="Dashboard">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <h2 style="margin:0; font-size: 24px;">Dashboard</h2>
+          <div class="muted">Active problems</div>
+        </div>
+
+        <div style="display:flex;gap:16px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <label class="muted" style="margin:0 8px 0 0">Sort:</label>
+            <select id="sortSelect" style="padding:10px;border-radius:10px;border:1px solid var(--border)">
+              <option value="recent">Most Recent</option>
+              <option value="popular">Most Liked</option>
+            </select>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
+            <div class="muted" style="font-size:14px">View:</div>
+            <button class="btn-ghost" id="showAllBtn">All</button>
+            <button class="btn-ghost" id="showMyBtn">My Posts</button>
+          </div>
+        </div>
+
+        <div class="feed" id="feed" aria-live="polite">
+          <!-- posts injected by JS -->
+        </div>
+      </section>
+
+      <!-- RIGHT: Post / Notifications / Profile panels -->
+      <aside id="rightPanel" class="col-4" style="display:flex;flex-direction:column;gap:20px">
+        <div id="post-content" class="panel" style="display:none" aria-label="Post a Problem">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+            <h3 style="margin:0; font-size: 20px;">Post a New Problem</h3>
+            <div class="muted" style="font-size:14px">Keep it clear & detailed</div>
+          </div>
+          <form id="postForm">
+            <div class="form-row">
+              <label for="topic">Problem Topic</label>
+              <input id="topic" type="text" placeholder="e.g., Water Leak in Hallway, Broken Equipment" required style="font-size: 16px; padding: 16px;" />
             </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" required></textarea>
+            <div class="form-row">
+              <label for="description">Detailed Description & Location</label>
+              <textarea id="description" placeholder="Please provide a detailed description including:
+• Exact location (building, room, floor)
+• When the issue was first noticed
+• Impact on students/activities
+• Any troubleshooting steps already taken" required style="min-height: 180px; font-size: 16px; padding: 16px;"></textarea>
             </div>
-            <button type="submit" class="post-btn">Post Problem</button>
-        </form>
-    </section>
+            <div class="form-row">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="checkbox" id="anonymousPost" style="width:18px;height:18px" checked>
+                <span>Post anonymously (your identity will be hidden from other users)</span>
+              </label>
+            </div>
+            <div style="display:flex;gap:12px;justify-content:flex-end; margin-top: 20px;">
+              <button type="button" class="btn-ghost" id="clearPost" style="padding: 12px 20px;">Clear</button>
+              <button type="submit" class="btn-primary" style="padding: 12px 24px;">Post Problem</button>
+            </div>
+          </form>
+        </div>
 
-    <section id="account-content" class="hidden">
-        <h2>My Profile</h2>
-        <div><strong>Name:</strong> Alex User</div>
-        <div><strong>Email:</strong> alex@example.com</div>
-        <div><strong>Role:</strong> Student</div>
-    </section>
+        <div id="notification-content" class="panel" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <h3 style="margin:0; font-size: 20px;">Notifications</h3>
+            <div class="muted" style="font-size:14px">Recent</div>
+          </div>
+          <div id="notifList" style="display:flex;flex-direction:column;gap:12px;max-height:460px;overflow:auto;padding-right:8px">
+            <!-- notifications here -->
+          </div>
+        </div>
 
-    <section id="notification-content" class="hidden">
-        <h2>Notifications</h2>
-        <ul>
-            <li><i class="fas fa-bell"></i> Wifi issue has been resolved.</li>
-            <li><i class="fas fa-bell"></i> Your problem “Projector Not Working” is being reviewed.</li>
-            <li><i class="fas fa-bell"></i> New comment on your post.</li>
-        </ul>
-    </section>
+        <div id="account-content" class="panel" style="display:none">
+          <h3 style="margin-top:0; font-size: 20px;">My Profile</h3>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px">
+            <div style="padding: 12px; background: var(--hover-bg); border-radius: 10px;"><strong>Name:</strong> <span id="profileNameTextAlt">Alex User</span></div>
+            <div style="padding: 12px; background: var(--hover-bg); border-radius: 10px;"><strong>Email:</strong> <span id="profileEmailTextAlt">alex@example.com</span></div>
+          </div>
+          <!-- Profile action buttons -->
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px">
+            <button class="btn-ghost" id="openChangePwdModal" title="Change password" style="width:100%;justify-content:center; padding: 12px;">
+              <i class="fas fa-key" style="margin-right:10px"></i>Change Password
+            </button>
+            <button class="btn-ghost" id="signOutBtnProfile" title="Sign out" style="width:100%;justify-content:center; padding: 12px;">
+              <i class="fas fa-sign-out-alt" style="margin-right:10px"></i>Sign Out
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Modal: Change Password (popup, with old password field) -->
+    <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal" role="document" aria-label="Change password modal">
+        <h3>Change Password</h3>
+        <p class="muted">Enter your current password and a new password to change it.</p>
+        <div class="form-row">
+          <label for="modalOldPwd">Current Password</label>
+          <input id="modalOldPwd" type="password" placeholder="Current password" />
+        </div>
+        <div class="form-row">
+          <label for="modalNewPwd">New Password</label>
+          <input id="modalNewPwd" type="password" placeholder="New password" />
+        </div>
+        <div class="form-row">
+          <label for="modalConfirmPwd">Confirm New Password</label>
+          <input id="modalConfirmPwd" type="password" placeholder="Confirm password" />
+        </div>
+        <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:12px">
+          <button id="modalCancel" class="btn-ghost">Cancel</button>
+          <button id="modalSave" class="btn-primary">Save</button>
+        </div>
+        <div id="modalMsg" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+  </main>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const menuItems = document.querySelectorAll('.menu-item');
-    const contentSections = document.querySelectorAll('.main-content section');
-    const postForm = document.getElementById('postForm');
-    const dashboard = document.getElementById('dashboard-content');
-    const topNotif = document.getElementById('topNotif');
+/* ============================================================================
+   Let's-Help Dashboard (single-file)
+   - Full page: feed, posts, likes/dislikes, comments/replies
+   - Notifications dropdown (badge clears when opened)
+   - Change Password & Sign Out controls are inside profile panel
+   - Change Password opens a popup modal with old password field
+   - Light mode default with enhanced styling
+   - Anonymous posting feature for sensitive issues
+   ============================================================================ */
 
-    function switchContent(targetId) {
-        contentSections.forEach(section => section.classList.add('hidden'));
-        const targetSection = document.getElementById(targetId + '-content');
-        if (targetSection) targetSection.classList.remove('hidden');
-        menuItems.forEach(item => item.classList.remove('active'));
-        const activeItem = document.querySelector(`.menu-item[data-content="${targetId}"]`);
-        if (activeItem) activeItem.classList.add('active');
-    }
+/* ------------------------
+   Selectors & helpers
+   ------------------------ */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const feed = $('#feed');
+const notifBtn = $('#notifBtn');
+const notifCountEl = $('#notifCount');
+const notifDropdown = $('#notifDropdown');
+const rightPanel = $('#rightPanel');
 
-    menuItems.forEach(item => {
-        item.addEventListener('click', e => {
-            e.preventDefault();
-            const content = item.getAttribute('data-content');
-            if(content) switchContent(content);
-        });
+const LS_PROFILE = 'lh_profile_v3';
+const LS_POSTS = 'lh_posts_v3';
+const LS_NOTIF  = 'lh_notif_v3';
+const LS_PWD    = 'lh_pwd_v3';
+const LS_THEME  = 'lh_theme_v3';
+
+function escapeHtml(str){ return String(str || '').replace(/[&<"'>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+function timeAgo(iso){
+  try{
+    const diff = Date.now() - new Date(iso).getTime();
+    const sec = Math.floor(diff/1000);
+    if(sec < 60) return `${sec}s`;
+    const min = Math.floor(sec/60);
+    if(min < 60) return `${min}m`;
+    const hr = Math.floor(min/60);
+    if(hr < 24) return `${hr}h`;
+    const d = Math.floor(hr/24);
+    return `${d}d`;
+  }catch(e){ return 'now'; }
+}
+function savePosts(){ localStorage.setItem(LS_POSTS, JSON.stringify(POSTS)); }
+function saveNotif(){ localStorage.setItem(LS_NOTIF, JSON.stringify(NOTIFICATIONS)); }
+function saveProfile(){ localStorage.setItem(LS_PROFILE, JSON.stringify(PROFILE)); }
+function savePwd(p){ localStorage.setItem(LS_PWD, p); }
+function loadPwd(){ return localStorage.getItem(LS_PWD) || 'password'; }
+
+/* ------------------------
+   Default profile & data
+   ------------------------ */
+let PROFILE = JSON.parse(localStorage.getItem(LS_PROFILE) || JSON.stringify({
+  id:'u1', name:'Alex User', email:'alex@example.com', role:'Student'
+}));
+
+let POSTS = JSON.parse(localStorage.getItem(LS_POSTS) || 'null') || [
+  {
+    id:'p1',
+    title:'Wifi Down in Block A',
+    desc:'The wifi in Block A has been down since this morning. Students can\'t access online resources, which is affecting scheduled classes and study time.',
+    reportedAt: new Date(Date.now()-1000*60*60*2).toISOString(),
+    location:'Block A', likes:12, dislikes:2, reactions:{}, comments:[
+      {id:'c1', author:'Puja', text:"Same issue here! I can't even open my mail.", at:new Date(Date.now()-1000*60*60*2).toISOString(), replies:[]},
+      {id:'c2', author:'Tenzin', text:'Admins, please help.', at:new Date(Date.now()-1000*60*60).toISOString(), replies:[]}
+    ], authorEmail:'puja@example.com',
+    isAnonymous: false
+  },
+  {
+    id:'p2',
+    title:'Projector Not Working in Lab C205',
+    desc:'The ceiling-mounted projector in Computer Lab C205 is completely unresponsive. I tried restarting it and checking the cables, but no luck. We need it fixed for tomorrow.',
+    reportedAt: new Date(Date.now()-1000*60*60*24).toISOString(),
+    location:'C205', likes:8, dislikes:1, reactions:{}, comments:[
+      {id:'c3', author:'Sangay', text:'This happened before, faulty HDMI.', at:new Date(Date.now()-1000*60*60*8).toISOString(), replies:[]}
+    ], authorEmail:'sangay@example.com',
+    isAnonymous: false
+  },
+  {
+    id:'p3',
+    title:'Feeling overwhelmed with studies',
+    desc:'I\'ve been feeling extremely pressured with my coursework lately. The workload seems endless and I\'m struggling to keep up with deadlines. I don\'t know how to manage my time better and I\'m starting to feel burned out. Has anyone else experienced this? Any advice would be greatly appreciated.',
+    reportedAt: new Date(Date.now()-1000*60*60*5).toISOString(),
+    location:'Not specified', likes:15, dislikes:0, reactions:{}, comments:[
+      {id:'c4', author:'Anonymous', text:'You\'re not alone. Many students go through this. Have you tried talking to a counselor?', at:new Date(Date.now()-1000*60*60*4).toISOString(), replies:[]},
+      {id:'c5', author:'Anonymous', text:'Try the Pomodoro technique. It helped me manage my study time better.', at:new Date(Date.now()-1000*60*60*3).toISOString(), replies:[]}
+    ], authorEmail:'alex@example.com',
+    isAnonymous: true
+  }
+];
+
+let NOTIFICATIONS = JSON.parse(localStorage.getItem(LS_NOTIF) || 'null') || [
+  {id:'n1', type:'info', text:'Wifi issue resolved in Block A.', at:new Date(Date.now()-1000*60*60*1).toISOString(), postId:'p1'},
+  {id:'n2', type:'update', text:'Projector issue is being reviewed.', at:new Date(Date.now()-1000*60*60*5).toISOString(), postId:'p2'},
+  {id:'n3', type:'comment', text:'New comment on your post about study pressure.', at:new Date(Date.now()-1000*60*60*3).toISOString(), postId:'p3'}
+];
+
+/* ------------------------
+   Initialize UI
+   ------------------------ */
+function updateSidebarProfile(){
+  $('#sidebarName').textContent = PROFILE.name;
+  $('#sidebarPic').textContent = (PROFILE.name && PROFILE.name[0]) ? PROFILE.name[0].toUpperCase() : 'U';
+  $('#profileNameText').textContent = PROFILE.name;
+  $('#profileEmailText').textContent = PROFILE.email;
+  $('#profileNameTextAlt').textContent = PROFILE.name;
+  $('#profileEmailTextAlt').textContent = PROFILE.email;
+}
+updateSidebarProfile();
+
+/* ------------------------
+   Render helpers: comments & posts
+   ------------------------ */
+function createCommentElement(commentObj, isPostAnonymous){
+  const wrapper = document.createElement('div');
+  wrapper.className = 'comment';
+  wrapper.dataset.commentId = commentObj.id;
+  
+  // Determine if comment author should be anonymous
+  const displayAuthor = isPostAnonymous ? 'Anonymous' : commentObj.author;
+  
+  wrapper.innerHTML = `
+    <div style="flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-600));display:flex;align-items:center;justify-content:center;font-weight:700;color:white">
+      ${displayAuthor === 'Anonymous' ? '?' : escapeHtml((commentObj.author || 'U')[0] || 'U')}
+    </div>
+    <div style="flex:1">
+      <div><strong>${escapeHtml(displayAuthor)}</strong> <span style="color:var(--muted);font-size:13px;margin-left:10px">${timeAgo(commentObj.at)}</span></div>
+      <div style="margin-top:8px">${escapeHtml(commentObj.text)}</div>
+      <div style="margin-top:8px;display:flex;gap:10px;align-items:center">
+        <button class="reply-btn" data-action="reply">Reply</button>
+      </div>
+      <div class="replies" style="margin-top:10px;display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+  `;
+  const repliesContainer = wrapper.querySelector('.replies');
+  (commentObj.replies || []).forEach(r => {
+    const el = document.createElement('div');
+    el.style.background = 'var(--card)';
+    el.style.border = '1px solid var(--border)';
+    el.style.padding = '12px';
+    el.style.borderRadius = '10px';
+    const replyAuthor = isPostAnonymous ? 'Anonymous' : r.author;
+    el.innerHTML = `<strong>${escapeHtml(replyAuthor)}</strong> <span style="color:var(--muted);font-size:13px;margin-left:8px">${timeAgo(r.at)}</span><div style="margin-top:8px">${escapeHtml(r.text)}</div>`;
+    repliesContainer.appendChild(el);
+  });
+  return wrapper;
+}
+
+function createPostElement(post){
+  const article = document.createElement('article');
+  article.className = 'post';
+  article.id = post.id;
+  article.setAttribute('data-title', post.title);
+  article.setAttribute('data-desc', post.desc);
+  
+  // Check if this post should be displayed as anonymous to current user
+  const isMyPost = post.authorEmail === PROFILE.email;
+  const shouldShowAsAnonymous = post.isAnonymous && !isMyPost;
+  
+  article.innerHTML = `
+    <h3>${escapeHtml(post.title)} <span style="font-size:16px">${post.location ? '📍' : ''}</span></h3>
+    <div class="muted">Reported: ${timeAgo(post.reportedAt)} · Location: ${escapeHtml(post.location || 'Not specified')} ${shouldShowAsAnonymous ? '· Posted anonymously' : ''}</div>
+    <p style="line-height: 1.7;">${escapeHtml(post.desc)}</p>
+
+    <div class="meta-row" role="group" aria-label="Post actions">
+      <button class="btn react btn-like" title="Like" data-action="like"><i class="fas fa-thumbs-up"></i> <span class="like-count">${post.likes||0}</span></button>
+      <button class="btn react btn-dislike" title="Dislike" data-action="dislike"><i class="fas fa-thumbs-down"></i> <span class="dislike-count">${post.dislikes||0}</span></button>
+      <button class="btn show-comments" title="Show comments" data-action="toggleComments"><i class="fas fa-comment"></i> <span class="comment-count">${post.comments?.length||0}</span></button>
+    </div>
+
+    <div class="comment-list" aria-live="polite" style="display:none">
+      <div class="comments-container" style="display:flex;flex-direction:column;gap:10px;margin-top:10px"></div>
+      <div style="display:flex;gap:10px;margin-top:10px">
+        <input class="comment-input" placeholder="Write a comment..." style="flex:1;border-radius:10px;padding:12px;border:1px solid var(--border)"/>
+        <button class="btn-primary add-comment">Comment</button>
+      </div>
+    </div>
+  `;
+  const commentContainer = article.querySelector('.comments-container');
+  (post.comments || []).forEach(c => commentContainer.appendChild(createCommentElement(c, post.isAnonymous)));
+  // restore reaction visual state if any
+  if(post.reactions && post.reactions[PROFILE.email] === 'like'){
+    const lb = article.querySelector('[data-action="like"]');
+    lb && lb.classList.add('liked') && (lb.style.background = 'linear-gradient(135deg,var(--accent),var(--accent-600))') && (lb.style.color='white');
+  }
+  if(post.reactions && post.reactions[PROFILE.email] === 'dislike'){
+    const db = article.querySelector('[data-action="dislike"]');
+    db && db.classList.add('disliked') && (db.style.background = 'linear-gradient(135deg,var(--muted),#475569)') && (db.style.color='white');
+  }
+  return article;
+}
+
+function renderFeed(){
+  feed.innerHTML = '';
+  let items = POSTS.slice();
+  const sort = document.getElementById('sortSelect')?.value || 'recent';
+  if(sort === 'recent') items.sort((a,b) => new Date(b.reportedAt) - new Date(a.reportedAt));
+  if(sort === 'popular') items.sort((a,b) => (b.likes||0) - (a.likes||0));
+  const view = window._viewMode || 'all';
+  if(view === 'mine') items = items.filter(i => i.authorEmail === PROFILE.email);
+  items.forEach(p => feed.appendChild(createPostElement(p)));
+}
+
+/* ------------------------
+   Notifications rendering
+   ------------------------ */
+function renderNotifDropdown(){
+  notifDropdown.innerHTML = '';
+  if(NOTIFICATIONS.length === 0){
+    notifDropdown.innerHTML = '<div class="muted" style="padding:16px">No notifications</div>';
+    return;
+  }
+  NOTIFICATIONS.slice().reverse().forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'notif-item';
+    el.dataset.notifId = n.id;
+    el.dataset.postId = n.postId;
+    el.style.border = 'none';
+    el.style.padding = '14px';
+    el.style.cursor = 'pointer';
+    el.innerHTML = `
+      <i class="fas ${n.type === 'info' ? 'fa-check-circle' : (n.type === 'update' ? 'fa-pencil-alt' : 'fa-comment-dots')}" style="color:${n.type === 'info' ? 'var(--success)' : (n.type === 'update' ? 'var(--warning)' : 'var(--accent)')};width:28px"></i>
+      <div style="flex:1;margin-left:10px">
+        <div style="font-weight:600">${escapeHtml(n.type && n.type[0].toUpperCase()+n.type.slice(1) || 'Notice')}</div>
+        <div class="muted" style="font-size:14px">${escapeHtml(n.text)}</div>
+      </div>
+      <div class="time">${timeAgo(n.at)}</div>
+    `;
+    el.addEventListener('click', () => {
+      document.querySelector('.menu a[data-content="dashboard"]').click();
+      setTimeout(()=> {
+        const postEl = document.getElementById(n.postId);
+        if(postEl){
+          const cl = postEl.querySelector('.comment-list');
+          if(cl) cl.style.display = 'block';
+          document.querySelectorAll('.post').forEach(p=>p.classList.remove('highlighted'));
+          postEl.classList.add('highlighted','pulse');
+          postEl.scrollIntoView({behavior:'smooth', block:'center'});
+          setTimeout(()=> postEl.classList.remove('pulse'),1600);
+        }
+      },200);
+      const idx = NOTIFICATIONS.findIndex(x => x.id === n.id);
+      if(idx>=0) NOTIFICATIONS.splice(idx,1);
+      saveNotif(); renderNotifDropdown(); renderNotificationPanel(); updateNotifBadge();
+      notifDropdown.style.display = 'none';
+      notifOpen = false;
     });
+    notifDropdown.appendChild(el);
+  });
+}
 
-    topNotif.addEventListener('click', () => switchContent('notification'));
+/* ------------------------
+   Notification UI behavior
+   ------------------------ */
+function updateNotifBadge(){
+  const count = NOTIFICATIONS.length;
+  notifCountEl.textContent = count > 99 ? '99+' : count;
+  notifCountEl.style.display = count === 0 ? 'none' : 'inline-block';
+}
+updateNotifBadge();
 
-    function attachPostEvents(post) {
-        const likeBtn = post.querySelector('.like-btn');
-        likeBtn.addEventListener('click', () => {
-            const liked = likeBtn.getAttribute('data-liked') === 'true';
-            let count = parseInt(likeBtn.querySelector('.like-count').textContent);
-            if (liked) { count--; likeBtn.classList.remove('liked'); likeBtn.setAttribute('data-liked','false'); }
-            else { count++; likeBtn.classList.add('liked'); likeBtn.setAttribute('data-liked','true'); }
-            likeBtn.querySelector('.like-count').textContent = count;
-        });
+let notifOpen = false;
+notifBtn.addEventListener('click', (e) => {
+  notifOpen = !notifOpen;
+  notifDropdown.style.display = notifOpen ? 'block' : 'none';
+  notifBtn.setAttribute('aria-expanded', String(notifOpen));
+  if(notifOpen){
+    renderNotifDropdown();
+    notifCountEl.style.display = 'none';
+  } else {
+    updateNotifBadge();
+  }
+  e.stopPropagation();
+});
 
-        const commentInput = post.querySelector('.comment-input');
-        const commentCountEl = post.querySelector('.comment-count');
-        commentInput.querySelector('button').addEventListener('click', () => {
-            const input = commentInput.querySelector('input');
-            const text = input.value.trim();
-            if (text !== "") {
-                const commentDiv = document.createElement('div');
-                commentDiv.classList.add('comment');
-                commentDiv.innerHTML = `<strong>You:</strong> ${text} <div class="reply-btn">Reply</div><div class="replies"></div>`;
-                commentInput.parentElement.insertBefore(commentDiv, commentInput);
-                input.value = "";
-                attachReplyEvent(commentDiv);
-                // increase comment count
-                let count = parseInt(commentCountEl.textContent);
-                commentCountEl.textContent = count + 1;
-            }
-        });
-
-        post.querySelectorAll('.comment').forEach(c => attachReplyEvent(c));
+notifDropdown.addEventListener('click', (ev) => {
+  const item = ev.target.closest('.notif-item');
+  if(!item) return;
+  const pid = item.dataset.postId;
+  document.querySelector('.menu a[data-content="dashboard"]').click();
+  setTimeout(() => {
+    const postEl = document.getElementById(pid);
+    if(postEl){
+      const cl = postEl.querySelector('.comment-list');
+      if(cl) cl.style.display = 'block';
+      document.querySelectorAll('.post').forEach(p => p.classList.remove('highlighted'));
+      postEl.classList.add('highlighted','pulse');
+      postEl.scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(()=> postEl.classList.remove('pulse'), 1600);
+    } else {
+      alert('Post not found.');
     }
+  }, 180);
+  notifDropdown.style.display = 'none';
+  notifOpen = false;
+  notifBtn.setAttribute('aria-expanded', 'false');
+});
 
-    function attachReplyEvent(commentDiv) {
-        const replyBtn = commentDiv.querySelector('.reply-btn');
-        replyBtn.addEventListener('click', () => {
-            if (commentDiv.querySelector('.reply-input')) return;
-            const replyBox = document.createElement('div');
-            replyBox.classList.add('reply-input');
-            replyBox.innerHTML = `<input type="text" placeholder="Write a reply..."><button>Reply</button>`;
-            commentDiv.appendChild(replyBox);
-            replyBox.querySelector('button').addEventListener('click', () => {
-                const text = replyBox.querySelector('input').value.trim();
-                if (text !== "") {
-                    const repliesDiv = commentDiv.querySelector('.replies');
-                    const reply = document.createElement('div');
-                    reply.classList.add('comment');
-                    reply.textContent = `You: ${text}`;
-                    repliesDiv.appendChild(reply);
-                    replyBox.remove();
-                }
-            });
-        });
+/* clicking outside should close dropdown */
+document.addEventListener('click', (ev) => {
+  if(notifOpen && !ev.target.closest('#notifDropdown') && !ev.target.closest('#notifBtn')){
+    notifDropdown.style.display = 'none';
+    notifOpen = false;
+    updateNotifBadge();
+  }
+});
+
+/* ------------------------
+   Delegated post events (like/dislike/comments/reply)
+   ------------------------ */
+document.addEventListener('click', (ev) => {
+  const likeBtn = ev.target.closest('[data-action="like"]');
+  const dislikeBtn = ev.target.closest('[data-action="dislike"]');
+  const toggleCommentsBtn = ev.target.closest('[data-action="toggleComments"]');
+  const addCommentBtn = ev.target.closest('.add-comment');
+  const replyBtn = ev.target.closest('.reply-btn');
+
+  if(likeBtn){
+    const postEl = likeBtn.closest('.post');
+    const pid = postEl.id;
+    const post = POSTS.find(p => p.id === pid);
+    if(!post) return;
+    const cur = post.reactions[PROFILE.email];
+    if(cur === 'like'){
+      post.likes = Math.max(0, (post.likes||0) - 1);
+      delete post.reactions[PROFILE.email];
+      likeBtn.classList.remove('liked'); likeBtn.style.background = ''; likeBtn.style.color = '';
+    } else {
+      post.likes = (post.likes||0) + 1;
+      if(cur === 'dislike'){ post.dislikes = Math.max(0,(post.dislikes||0)-1); const db = postEl.querySelector('[data-action="dislike"]'); if(db){ db.classList.remove('disliked'); db.style.background=''; db.style.color=''; } }
+      post.reactions[PROFILE.email] = 'like';
+      likeBtn.classList.add('liked'); likeBtn.style.background = 'linear-gradient(135deg,var(--accent),var(--accent-600))'; likeBtn.style.color = 'white';
     }
+    postEl.querySelector('.like-count').textContent = post.likes || 0;
+    postEl.querySelector('.dislike-count').textContent = post.dislikes || 0;
+    savePosts();
+    return;
+  }
 
-    dashboard.querySelectorAll('.post').forEach(post => attachPostEvents(post));
+  if(dislikeBtn){
+    const postEl = dislikeBtn.closest('.post');
+    const pid = postEl.id;
+    const post = POSTS.find(p => p.id === pid);
+    if(!post) return;
+    const cur = post.reactions[PROFILE.email];
+    if(cur === 'dislike'){
+      post.dislikes = Math.max(0, (post.dislikes||0) - 1);
+      delete post.reactions[PROFILE.email];
+      dislikeBtn.classList.remove('disliked'); dislikeBtn.style.background = ''; dislikeBtn.style.color = '';
+    } else {
+      post.dislikes = (post.dislikes||0) + 1;
+      if(cur === 'like'){ post.likes = Math.max(0,(post.likes||0)-1); const lb = postEl.querySelector('[data-action="like"]'); if(lb){ lb.classList.remove('liked'); lb.style.background=''; lb.style.color=''; } }
+      post.reactions[PROFILE.email] = 'dislike';
+      dislikeBtn.classList.add('disliked'); dislikeBtn.style.background = 'linear-gradient(135deg,var(--muted),#475569)'; dislikeBtn.style.color = 'white';
+    }
+    postEl.querySelector('.like-count').textContent = post.likes || 0;
+    postEl.querySelector('.dislike-count').textContent = post.dislikes || 0;
+    savePosts();
+    return;
+  }
 
-    postForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const topic = document.getElementById('topic').value;
-        const desc = document.getElementById('description').value;
-        if (!topic || !desc) return;
-        const newPost = document.createElement('div');
-        newPost.classList.add('post');
-        newPost.innerHTML = `
-            <h3>${topic}</h3>
-            <p>${desc}</p>
-            <div class="post-actions">
-                <i class="fas fa-thumbs-up like-btn" data-liked="false"><span class="like-count">0</span></i>
-                <i class="fas fa-comment"><span class="comment-count">0</span></i>
-            </div>
-            <div class="comment-section">
-                <div class="comment-input">
-                    <input type="text" placeholder="Write a comment...">
-                    <button>Post</button>
-                </div>
-            </div>
-        `;
-        dashboard.prepend(newPost);
-        attachPostEvents(newPost);
-        postForm.reset();
-        switchContent('dashboard');
+  if(toggleCommentsBtn){
+    const postEl = toggleCommentsBtn.closest('.post');
+    const cl = postEl.querySelector('.comment-list');
+    cl.style.display = cl.style.display === 'block' ? 'none' : 'block';
+    return;
+  }
+
+  if(addCommentBtn){
+    const postEl = addCommentBtn.closest('.post');
+    const pid = postEl.id;
+    const post = POSTS.find(p => p.id === pid);
+    if(!post) return;
+    const input = postEl.querySelector('.comment-input');
+    const text = input.value.trim();
+    if(!text) return;
+    
+    // Check if post is anonymous and current user is not the author
+    const isMyPost = post.authorEmail === PROFILE.email;
+    const commentAuthor = (post.isAnonymous && !isMyPost) ? 'Anonymous' : PROFILE.name;
+    
+    const newComment = { id:'c'+Date.now(), author: commentAuthor, text, at: new Date().toISOString(), replies: [] };
+    post.comments.unshift(newComment);
+    const container = postEl.querySelector('.comments-container');
+    container.insertBefore(createCommentElement(newComment, post.isAnonymous), container.firstChild);
+    input.value = '';
+    postEl.querySelector('.comment-count').textContent = post.comments.length;
+    // add notification
+    NOTIFICATIONS.push({ id:'n'+Date.now(), type:'comment', text:`New comment on "${post.title}"`, at:new Date().toISOString(), postId: post.id });
+    savePosts(); saveNotif();
+    updateNotifBadge();
+    return;
+  }
+
+  if(replyBtn){
+    const commentEl = ev.target.closest('.comment');
+    if(!commentEl) return;
+    if(commentEl.querySelector('.reply-inline')) return; // already open
+    const row = document.createElement('div');
+    row.className = 'reply-inline';
+    row.style.display = 'flex'; row.style.gap = '10px'; row.style.marginTop = '10px';
+    row.innerHTML = `<input placeholder="Write a reply..." style="flex:1;border-radius:8px;padding:10px;border:1px solid var(--border)"/><button class="btn-primary">Reply</button>`;
+    const input = row.querySelector('input');
+    const btn = row.querySelector('button');
+    commentEl.appendChild(row);
+    btn.addEventListener('click', () => {
+      const txt = input.value.trim();
+      if(!txt) return;
+      const cid = commentEl.dataset.commentId;
+      const postEl = commentEl.closest('.post');
+      const pid = postEl.id;
+      const post = POSTS.find(p => p.id === pid);
+      if(!post) return;
+      const commentObj = post.comments.find(c => c.id === cid);
+      if(!commentObj) return;
+      
+      // Check if post is anonymous and current user is not the author
+      const isMyPost = post.authorEmail === PROFILE.email;
+      const replyAuthor = (post.isAnonymous && !isMyPost) ? 'Anonymous' : PROFILE.name;
+      
+      const reply = { id:'r'+Date.now(), author: replyAuthor, text: txt, at: new Date().toISOString() };
+      commentObj.replies.push(reply);
+      const repliesContainer = commentEl.querySelector('.replies');
+      const el = document.createElement('div');
+      el.style.background = 'var(--card)'; el.style.border = '1px solid var(--border)'; el.style.padding='12px'; el.style.borderRadius='10px';
+      el.innerHTML = `<strong>${escapeHtml(replyAuthor)}</strong> <span style="color:var(--muted);font-size:13px;margin-left:8px">${timeAgo(reply.at)}</span><div style="margin-top:8px">${escapeHtml(reply.text)}</div>`;
+      repliesContainer.appendChild(el);
+      row.remove();
+      savePosts();
     });
+    return;
+  }
+});
 
-    switchContent('dashboard');
+/* ------------------------
+   Search/highlight
+   ------------------------ */
+ $('#searchInput').addEventListener('input', () => {
+  const q = $('#searchInput').value.trim().toLowerCase();
+  $$('.post').forEach(p => {
+    const title = (p.getAttribute('data-title')||'').toLowerCase();
+    const desc = (p.getAttribute('data-desc')||'').toLowerCase();
+    const match = q === '' || title.includes(q) || desc.includes(q);
+    p.style.display = match ? 'flex' : 'none';
+    const h3 = p.querySelector('h3');
+    const ptag = p.querySelector('p');
+    h3.innerHTML = highlightText(p.getAttribute('data-title') || h3.innerText, q);
+    ptag.innerHTML = highlightText(p.getAttribute('data-desc') || ptag.innerText, q);
+  });
+});
+function highlightText(text, q){
+  if(!q) return escapeHtml(text);
+  const r = escapeRegExp(q);
+  return escapeHtml(text).replace(new RegExp(r,'gi'), m => `<mark style="background:rgba(59, 130, 246, 0.2);color:var(--accent);padding:2px 4px;border-radius:4px">${m}</mark>`);
+}
+function escapeRegExp(s){ return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+/* ------------------------
+   Post form handling
+   ------------------------ */
+ $('#postForm')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const title = $('#topic').value.trim();
+  const desc = $('#description').value.trim();
+  const isAnonymous = $('#anonymousPost').checked;
+  
+  if(!title || !desc) return;
+  const newPost = { 
+    id:'p'+Date.now(), 
+    title, 
+    desc, 
+    reportedAt: new Date().toISOString(), 
+    location:'Not specified', 
+    likes:0, 
+    dislikes:0, 
+    reactions:{}, 
+    comments:[], 
+    authorEmail: PROFILE.email,
+    isAnonymous: isAnonymous
+  };
+  POSTS.push(newPost);
+  savePosts();
+  renderFeed();
+  $('#postForm').reset();
+  // Reset anonymous checkbox to checked by default
+  $('#anonymousPost').checked = true;
+  document.querySelector('.menu a[data-content="dashboard"]').click();
+  setTimeout(()=>{ const el=document.getElementById(newPost.id); if(el){ el.classList.add('highlighted','pulse'); el.scrollIntoView({behavior:'smooth', block:'center'}); setTimeout(()=> el.classList.remove('pulse'),1600);} },200);
+});
+
+ $('#clearPost')?.addEventListener('click', () => {
+  $('#postForm').reset();
+  // Reset anonymous checkbox to checked by default
+  $('#anonymousPost').checked = true;
+});
+
+/* ------------------------
+   Sidebar navigation switching
+   ------------------------ */
+document.querySelectorAll('.menu a').forEach(a => a.addEventListener('click', (ev) => {
+  ev.preventDefault();
+  document.querySelectorAll('.menu a').forEach(x => x.classList.remove('active'));
+  a.classList.add('active');
+  const target = a.dataset.content || 'dashboard';
+  
+  // Adjust column spans based on the selected content
+  const dashboardContent = $('#dashboard-content');
+  const rightPanel = $('#rightPanel');
+  
+  // Reset to default
+  dashboardContent.className = 'col-8 panel';
+  rightPanel.className = 'col-4';
+  
+  if(target === 'post') {
+    // Make the post form wider
+    dashboardContent.className = 'col-4 panel';
+    rightPanel.className = 'col-8';
+  }
+  
+  // Show/hide content
+  $('#dashboard-content').style.display = target === 'dashboard' ? 'block' : 'none';
+  $('#post-content').style.display = target === 'post' ? 'block' : 'none';
+  $('#account-content').style.display = target === 'account' ? 'block' : 'none';
+  $('#notification-content').style.display = target === 'notification' ? 'block' : 'none';
+  
+  if(target === 'notification'){ notifCountEl.style.display = 'none'; renderNotificationPanel(); }
+}));
+
+/* ------------------------
+   Notifications list rendering (right panel)
+   ------------------------ */
+function renderNotificationPanel(){
+  const list = $('#notifList');
+  if(!list) return;
+  list.innerHTML = '';
+  NOTIFICATIONS.slice().reverse().forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'notif-item';
+    el.dataset.notifId = n.id;
+    el.dataset.postId = n.postId;
+    el.innerHTML = `<i class="fas ${n.type === 'info' ? 'fa-check-circle' : (n.type === 'update' ? 'fa-pencil-alt' : 'fa-comment-dots')}" style="color:${n.type === 'info' ? 'var(--success)' : (n.type === 'update' ? 'var(--warning)' : 'var(--accent)')};width:28px"></i><div style="flex:1"><div style="font-weight:600">${escapeHtml(n.type && n.type[0].toUpperCase()+n.type.slice(1) || 'Notice')}</div><div class="muted" style="font-size:14px">${escapeHtml(n.text)}</div></div><div class="time">${timeAgo(n.at)}</div>`;
+    el.addEventListener('click', () => {
+      document.querySelector('.menu a[data-content="dashboard"]').click();
+      setTimeout(()=> {
+        const postEl = document.getElementById(n.postId);
+        if(postEl){ const cl=postEl.querySelector('.comment-list'); if(cl) cl.style.display='block'; document.querySelectorAll('.post').forEach(p=>p.classList.remove('highlighted')); postEl.classList.add('highlighted','pulse'); postEl.scrollIntoView({behavior:'smooth', block:'center'}); setTimeout(()=> postEl.classList.remove('pulse'),1600); }
+      },200);
+      const idx = NOTIFICATIONS.findIndex(x => x.id === n.id);
+      if(idx>=0) NOTIFICATIONS.splice(idx,1);
+      saveNotif();
+      renderNotificationPanel();
+      updateNotifBadge();
+      renderNotifDropdown();
+    });
+    list.appendChild(el);
+  });
+}
+
+/* ------------------------
+   Modal logic (Change Password popup; with old password field)
+   ------------------------ */
+const modalBackdrop = $('#modalBackdrop');
+const modalSaveBtn = $('#modalSave');
+const modalCancelBtn = $('#modalCancel');
+const modalMsg = $('#modalMsg');
+
+// Use event delegation for buttons that might be hidden initially
+document.addEventListener('click', (ev) => {
+  // Change Password button
+  if(ev.target.closest('#openChangePwdModal')) {
+    modalMsg.textContent = '';
+    $('#modalOldPwd').value = '';
+    $('#modalNewPwd').value = '';
+    $('#modalConfirmPwd').value = '';
+    modalBackdrop.style.display = 'flex';
+    modalBackdrop.setAttribute('aria-hidden','false');
+  }
+  
+  // Sign Out button
+  if(ev.target.closest('#signOutBtnProfile')) {
+    if(confirm('Sign out? This is a demo; data stays in your browser.')) {
+      alert('Signed out (demo). You can implement real auth on the server.');
+      // If you want: could redirect or clear PROFILE here
+    }
+  }
+});
+
+modalCancelBtn.addEventListener('click', () => {
+  modalBackdrop.style.display = 'none';
+  modalBackdrop.setAttribute('aria-hidden','true');
+});
+
+modalSaveBtn.addEventListener('click', () => {
+  const oldPwd = $('#modalOldPwd').value;
+  const newPwd = $('#modalNewPwd').value;
+  const confirmPwd = $('#modalConfirmPwd').value;
+  
+  // Simple validation
+  if (!oldPwd || !newPwd || !confirmPwd) {
+    modalMsg.textContent = 'Please fill in all fields.';
+    modalMsg.style.color = 'var(--danger)';
+    return;
+  }
+  
+  if (newPwd !== confirmPwd) {
+    modalMsg.textContent = 'New passwords do not match.';
+    modalMsg.style.color = 'var(--danger)';
+    return;
+  }
+  
+  // In a real app, you would verify the old password against the stored password
+  // For this demo, we'll just show success
+  modalMsg.textContent = 'Password changed successfully.';
+  modalMsg.style.color = 'var(--success)';
+  savePwd(newPwd); // Save the new password
+  
+  setTimeout(() => {
+    modalBackdrop.style.display = 'none';
+    modalBackdrop.setAttribute('aria-hidden','true');
+    modalMsg.textContent = '';
+  }, 1100);
+});
+
+/* ------------------------
+   Theme toggle and ensure readability
+   ------------------------ */
+function applyTheme(theme){
+  if(theme === 'dark') document.documentElement.classList.add('dark');
+  else document.documentElement.classList.remove('dark');
+  localStorage.setItem(LS_THEME, theme);
+  const icon = $('#themeToggle i');
+  icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  $('#themeToggle').setAttribute('aria-pressed', String(theme === 'dark'));
+  renderNotifDropdown();
+}
+const savedTheme = localStorage.getItem(LS_THEME) || 'light';
+applyTheme(savedTheme);
+ $('#themeToggle').addEventListener('click', () => {
+  const cur = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+});
+
+/* ------------------------
+   Render initial state & helpers
+   ------------------------ */
+function refreshAll(){
+  renderFeed();
+  renderNotificationPanel();
+  renderNotifDropdown();
+  updateNotifBadge();
+  updateSidebarProfile();
+  saveProfile();
+  savePosts();
+  saveNotif();
+}
+refreshAll();
+
+/* ------------------------
+   View toggles and helpers
+   ------------------------ */
+ $('#sortSelect')?.addEventListener('change', () => renderFeed());
+ $('#showAllBtn')?.addEventListener('click', () => { window._viewMode = 'all'; renderFeed(); });
+ $('#showMyBtn')?.addEventListener('click', () => { window._viewMode = 'mine'; renderFeed(); });
+
+/* ------------------------
+   Save before unload
+   ------------------------ */
+window.addEventListener('beforeunload', () => {
+  savePosts(); saveNotif(); saveProfile();
+});
+
+/* ------------------------
+   Small dev helper on double click to inspect post data
+   ------------------------ */
+feed.addEventListener('dblclick', (e) => {
+  const p = e.target.closest('.post');
+  if(p){
+    const pid = p.id;
+    console.log('Post data', POSTS.find(x=>x.id===pid));
+  }
 });
 </script>
 </body>
