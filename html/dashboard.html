@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>User — Dashboard</title>
+<title>user — Dashboard</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 <style>
   /* -------------------------
@@ -37,6 +37,9 @@
     --hover-bg: #f1f5f9;
     --lets-color: #ffffff; /* Let's color in light mode */
     --help-color: #00d084; /* Help color in light mode */
+    --gradient-color-1: rgba(59, 130, 246, 0.15);
+    --gradient-color-2: rgba(16, 185, 129, 0.15);
+    --gradient-color-3: rgba(139, 92, 246, 0.15);
   }
 
   /* dark theme variables */
@@ -63,6 +66,9 @@
     --hover-bg: #334155;
     --lets-color: #00ff88; /* Let's color in dark mode */
     --help-color: #ffffff; /* Help color in dark mode */
+    --gradient-color-1: rgba(96, 165, 250, 0.25);
+    --gradient-color-2: rgba(52, 211, 153, 0.25);
+    --gradient-color-3: rgba(167, 139, 250, 0.25);
   }
 
   *{box-sizing:border-box}
@@ -75,6 +81,133 @@
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Enhanced animated gradient background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--gradient-color-1), var(--gradient-color-2), var(--gradient-color-3));
+    z-index: -1;
+    animation: gradientShift 12s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background: linear-gradient(45deg, var(--gradient-color-1), var(--gradient-color-2), var(--gradient-color-3));
+      opacity: 0.9;
+      transform: scale(1);
+    }
+    25% {
+      background: linear-gradient(135deg, var(--gradient-color-2), var(--gradient-color-3), var(--gradient-color-1));
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    50% {
+      background: linear-gradient(225deg, var(--gradient-color-3), var(--gradient-color-1), var(--gradient-color-2));
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    75% {
+      background: linear-gradient(315deg, var(--gradient-color-1), var(--gradient-color-3), var(--gradient-color-2));
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    100% {
+      background: linear-gradient(45deg, var(--gradient-color-1), var(--gradient-color-2), var(--gradient-color-3));
+      opacity: 0.9;
+      transform: scale(1);
+    }
+  }
+
+  /* Enhanced floating particles */
+  .particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    opacity: 0.7;
+    animation: float 15s infinite;
+  }
+
+  .particle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    filter: blur(1px);
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(100vh) scale(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.7;
+    }
+    90% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateY(-100vh) scale(1.5) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Additional animated shapes */
+  .shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: shapeFloat 25s infinite ease-in-out;
+  }
+
+  @keyframes shapeFloat {
+    0%, 100% {
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 0.1;
+    }
+    25% {
+      transform: translateY(-30px) translateX(20px) scale(1.1);
+      opacity: 0.15;
+    }
+    50% {
+      transform: translateY(20px) translateX(-30px) scale(0.9);
+      opacity: 0.2;
+    }
+    75% {
+      transform: translateY(-20px) translateX(30px) scale(1.05);
+      opacity: 0.15;
+    }
   }
 
   a{color:inherit}
@@ -232,6 +365,10 @@
 </head>
 <body>
 
+<!-- Enhanced animated background elements -->
+<div class="particles" id="particles"></div>
+<div class="shapes" id="shapes"></div>
+
 <div class="wrap">
   <!-- SIDEBAR -->
   <aside class="sidebar" aria-label="Main sidebar">
@@ -277,6 +414,7 @@
 
       <div class="top-actions" style="position:relative">
         <div class="icon-btn" id="themeToggle" title="Toggle dark/light mode" aria-pressed="false"><i class="fas fa-moon"></i></div>
+        <div class="icon-btn" id="effectToggle" title="Toggle background effects" aria-pressed="true"><i class="fas fa-palette"></i></div>
         <div class="icon-btn" id="notifBtn" title="Notifications" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-bell" aria-hidden="true"></i>
           <span class="badge" id="notifCount">0</span>
@@ -413,6 +551,7 @@
    - Change Password opens a popup modal with old password field
    - Light mode default with enhanced styling
    - Anonymous posting feature for sensitive issues
+   - Enhanced animated gradient background with floating particles and shapes
    ============================================================================ */
 
 /* ------------------------
@@ -425,12 +564,15 @@ const notifBtn = $('#notifBtn');
 const notifCountEl = $('#notifCount');
 const notifDropdown = $('#notifDropdown');
 const rightPanel = $('#rightPanel');
+const particles = $('#particles');
+const shapes = $('#shapes');
 
 const LS_PROFILE = 'lh_profile_v3';
 const LS_POSTS = 'lh_posts_v3';
 const LS_NOTIF  = 'lh_notif_v3';
 const LS_PWD    = 'lh_pwd_v3';
 const LS_THEME  = 'lh_theme_v3';
+const LS_EFFECT = 'lh_effect_v3';
 
 function escapeHtml(str){ return String(str || '').replace(/[&<"'>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
 function timeAgo(iso){
@@ -451,6 +593,124 @@ function saveNotif(){ localStorage.setItem(LS_NOTIF, JSON.stringify(NOTIFICATION
 function saveProfile(){ localStorage.setItem(LS_PROFILE, JSON.stringify(PROFILE)); }
 function savePwd(p){ localStorage.setItem(LS_PWD, p); }
 function loadPwd(){ return localStorage.getItem(LS_PWD) || 'password'; }
+function saveEffect(enabled){ localStorage.setItem(LS_EFFECT, JSON.stringify(enabled)); }
+function loadEffect(){ return JSON.parse(localStorage.getItem(LS_EFFECT) || 'true'); }
+
+/* ------------------------
+   Create enhanced floating particles
+   ------------------------ */
+function createParticles() {
+  const particleCount = 20;
+  particles.innerHTML = '';
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('span');
+    particle.className = 'particle';
+    
+    // Random size
+    const size = Math.random() * 12 + 8;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    
+    // Random position
+    const posX = Math.random() * 100;
+    particle.style.left = `${posX}%`;
+    
+    // Random animation delay and duration
+    const delay = Math.random() * 20;
+    const duration = Math.random() * 15 + 10;
+    particle.style.animationDelay = `${delay}s`;
+    particle.style.animationDuration = `${duration}s`;
+    
+    // Random color with higher opacity
+    const colors = [
+      'rgba(59, 130, 246, 0.8)', 
+      'rgba(16, 185, 129, 0.8)', 
+      'rgba(139, 92, 246, 0.8)', 
+      'rgba(245, 158, 11, 0.8)',
+      'rgba(239, 68, 68, 0.8)'
+    ];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.background = color;
+    
+    particles.appendChild(particle);
+  }
+}
+
+/* ------------------------
+   Create animated shapes
+   ------------------------ */
+function createShapes() {
+  const shapeCount = 8;
+  shapes.innerHTML = '';
+  
+  for (let i = 0; i < shapeCount; i++) {
+    const shape = document.createElement('div');
+    shape.className = 'shape';
+    
+    // Random size
+    const size = Math.random() * 200 + 100;
+    shape.style.width = `${size}px`;
+    shape.style.height = `${size}px`;
+    
+    // Random position
+    const posX = Math.random() * 100;
+    const posY = Math.random() * 100;
+    shape.style.left = `${posX}%`;
+    shape.style.top = `${posY}%`;
+    
+    // Random animation delay
+    const delay = Math.random() * 25;
+    shape.style.animationDelay = `${delay}s`;
+    
+    // Random color
+    const colors = [
+      'rgba(59, 130, 246, 0.1)', 
+      'rgba(16, 185, 129, 0.1)', 
+      'rgba(139, 92, 246, 0.1)', 
+      'rgba(245, 158, 11, 0.1)'
+    ];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    shape.style.background = `radial-gradient(circle, ${color}, transparent)`;
+    
+    shapes.appendChild(shape);
+  }
+}
+
+/* ------------------------
+   Toggle background effects
+   ------------------------ */
+function toggleEffects() {
+  const isEnabled = loadEffect();
+  const newState = !isEnabled;
+  saveEffect(newState);
+  
+  if (newState) {
+    // Enable effects with higher visibility
+    if (document.documentElement.classList.contains('dark')) {
+      document.body.style.setProperty('--gradient-color-1', 'rgba(96, 165, 250, 0.25)');
+      document.body.style.setProperty('--gradient-color-2', 'rgba(52, 211, 153, 0.25)');
+      document.body.style.setProperty('--gradient-color-3', 'rgba(167, 139, 250, 0.25)');
+    } else {
+      document.body.style.setProperty('--gradient-color-1', 'rgba(59, 130, 246, 0.15)');
+      document.body.style.setProperty('--gradient-color-2', 'rgba(16, 185, 129, 0.15)');
+      document.body.style.setProperty('--gradient-color-3', 'rgba(139, 92, 246, 0.15)');
+    }
+    particles.style.display = 'block';
+    shapes.style.display = 'block';
+    createParticles();
+    createShapes();
+  } else {
+    // Disable effects
+    document.body.style.setProperty('--gradient-color-1', 'transparent');
+    document.body.style.setProperty('--gradient-color-2', 'transparent');
+    document.body.style.setProperty('--gradient-color-3', 'transparent');
+    particles.style.display = 'none';
+    shapes.style.display = 'none';
+  }
+  
+  $('#effectToggle').setAttribute('aria-pressed', String(newState));
+}
 
 /* ------------------------
    Default profile & data
@@ -1030,8 +1290,19 @@ modalSaveBtn.addEventListener('click', () => {
    Theme toggle and ensure readability
    ------------------------ */
 function applyTheme(theme){
-  if(theme === 'dark') document.documentElement.classList.add('dark');
-  else document.documentElement.classList.remove('dark');
+  if(theme === 'dark') {
+    document.documentElement.classList.add('dark');
+    // Update gradient colors for dark mode with higher visibility
+    document.body.style.setProperty('--gradient-color-1', 'rgba(96, 165, 250, 0.25)');
+    document.body.style.setProperty('--gradient-color-2', 'rgba(52, 211, 153, 0.25)');
+    document.body.style.setProperty('--gradient-color-3', 'rgba(167, 139, 250, 0.25)');
+  } else {
+    document.documentElement.classList.remove('dark');
+    // Update gradient colors for light mode with higher visibility
+    document.body.style.setProperty('--gradient-color-1', 'rgba(59, 130, 246, 0.15)');
+    document.body.style.setProperty('--gradient-color-2', 'rgba(16, 185, 129, 0.15)');
+    document.body.style.setProperty('--gradient-color-3', 'rgba(139, 92, 246, 0.15)');
+  }
   localStorage.setItem(LS_THEME, theme);
   const icon = $('#themeToggle i');
   icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
@@ -1047,6 +1318,11 @@ applyTheme(savedTheme);
 });
 
 /* ------------------------
+   Effect toggle
+   ------------------------ */
+ $('#effectToggle').addEventListener('click', toggleEffects);
+
+/* ------------------------
    Render initial state & helpers
    ------------------------ */
 function refreshAll(){
@@ -1058,6 +1334,18 @@ function refreshAll(){
   saveProfile();
   savePosts();
   saveNotif();
+  
+  // Initialize particles and shapes if effect is enabled
+  if (loadEffect()) {
+    createParticles();
+    createShapes();
+  } else {
+    particles.style.display = 'none';
+    shapes.style.display = 'none';
+  }
+  
+  // Set initial effect toggle state
+  $('#effectToggle').setAttribute('aria-pressed', String(loadEffect()));
 }
 refreshAll();
 
