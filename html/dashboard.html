@@ -605,6 +605,7 @@
       <a href="#" data-content="post"><i class="fas fa-plus-circle"></i> Post Problem</a>
       <a href="#" data-content="account"><i class="fas fa-user"></i> Profile</a>
       <a href="#" data-content="notification"><i class="fas fa-bell"></i> Notifications <span style="margin-left:auto;font-weight:700;color:rgba(255,255,255,0.8)">●</span></a>
+      <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </nav>
   </aside>
 
@@ -1419,6 +1420,62 @@ document.querySelectorAll('.menu a').forEach(a => a.addEventListener('click', (e
     renderNotificationPanel();
   }
 }));
+
+/* ------------------------
+   Logout button functionality
+   ------------------------ */
+ $('#logoutBtn').addEventListener('click', (e) => {
+  e.preventDefault();
+  
+  // Create a custom confirmation dialog
+  const confirmDialog = document.createElement('div');
+  confirmDialog.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  `;
+  
+  const dialogBox = document.createElement('div');
+  dialogBox.style.cssText = `
+    background: var(--card);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+  `;
+  
+  dialogBox.innerHTML = `
+    <h3 style="margin-top: 0; color: var(--text);">Confirm Logout</h3>
+    <p style="color: var(--muted); margin: 16px 0;">Are you sure you want to logout?</p>
+    <div style="display: flex; gap: 12px; justify-content: center;">
+      <button id="cancelLogout" class="btn-ghost" style="padding: 10px 20px;">Cancel</button>
+      <button id="confirmLogout" class="btn-primary" style="padding: 10px 20px;">Yes</button>
+    </div>
+  `;
+  
+  confirmDialog.appendChild(dialogBox);
+  document.body.appendChild(confirmDialog);
+  
+  // Handle button clicks
+  document.getElementById('cancelLogout').addEventListener('click', () => {
+    document.body.removeChild(confirmDialog);
+  });
+  
+  document.getElementById('confirmLogout').addEventListener('click', () => {
+    document.body.removeChild(confirmDialog);
+    // In a real app, you would clear session and redirect to login page
+    alert('You have been logged out. (This is a demo - in a real app, you would be redirected to the login page)');
+  });
+});
 
 /* ------------------------
    Notifications list rendering (right panel)
