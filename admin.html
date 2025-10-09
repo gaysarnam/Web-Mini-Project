@@ -148,114 +148,29 @@
             content: '';
             position: absolute;
             width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            filter: blur(1px);
+            box-shadow: 1px 0 5px rgba(0,0,0,0.2);
         }
 
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) scale(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1.5) rotate(360deg);
-                opacity: 0;
-            }
+        /* --- Main Content Area --- */
+        .main-content { 
+            flex-grow: 1; 
+            padding: 30px; 
+            position: relative; /* Needed to correctly position the notification bell */
         }
-
-        /* Additional animated shapes */
-        .shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-            pointer-events: none;
+        .header { 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid #ddd; 
+            padding-bottom: 10px; 
+            display: flex; 
+            /* CENTER THE HEADER TEXT */
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column; 
+            text-align: center; 
         }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.1;
-            animation: shapeFloat 25s infinite ease-in-out;
-        }
-
-        @keyframes shapeFloat {
-            0%, 100% {
-                transform: translateY(0) translateX(0) scale(1);
-                opacity: 0.1;
-            }
-            25% {
-                transform: translateY(-30px) translateX(20px) scale(1.1);
-                opacity: 0.15;
-            }
-            50% {
-                transform: translateY(20px) translateX(-30px) scale(0.9);
-                opacity: 0.2;
-            }
-            75% {
-                transform: translateY(-20px) translateX(30px) scale(1.05);
-                opacity: 0.15;
-            }
-        }
-
-        a{color:inherit}
-        button{font-family:inherit; cursor: pointer; transition: all var(--trans);}
-
-        /* -------------------------
-           Layout
-           ------------------------- */
-        .sidebar{ 
-            width:280px;background:var(--sidebar-gradient);
-            color: #f1f5f9;padding:24px;border-radius:20px;box-shadow:var(--shadow-lg);
-            display:flex;flex-direction:column;gap:16px;margin:24px;
-        }
-        .brand{display:flex;align-items:center;gap:14px}
-        .logo{
-            width:60px;height:60px;border-radius:14px;background:var(--card);display:flex;align-items:center;justify-content:center;
-            color:var(--sidebar);font-weight:700;font-size:22px;box-shadow:var(--shadow-md)
-        }
-        .brand h1{font-size:20px;margin:0;letter-spacing:0.5px}
-        .profile{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:14px;background:rgba(255,255,255,0.05)}
-        .profile-top{display:flex;align-items:center;gap:14px}
-        .profile-pic{width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
-        .profile-info{font-size:15px}
-        .profile-info div{font-weight:600}
-        .profile-meta{font-size:13px;color:rgba(255,255,255,0.7)}
-        .menu{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-        .menu a{
-            display:flex;align-items:center;gap:14px;padding:14px;border-radius:0 28px 28px 0;color:rgba(255,255,255,0.9);
-            text-decoration:none;font-weight:600;transition:all var(--trans);
-        }
-        .menu a i{width:24px;text-align:center}
-        .menu a:hover{transform:translateX(8px);background:rgba(255,255,255,0.08)}
-        .menu a.active{background:var(--card);color:var(--sidebar);box-shadow:var(--shadow-md);transform:none}
-        .menu a.logout {
-            margin-top: 20px;
-            color: rgba(239, 68, 68, 0.9);
-        }
-        .menu a.logout:hover {
-            background: rgba(239, 68, 68, 0.15);
-        }
-
-        /* Main Content Area */
-        .main-content{ 
-            flex:1;padding:24px 24px 60px 0;display:flex;flex-direction:column;
-        }
-        .header{ 
-            margin-bottom:24px;
-            display:flex; 
-            justify-content:space-between;
-            align-items:center;
+        .header > div:first-child { 
+            width: 100%; 
+            text-align: center; 
         }
         .header h1 { 
             margin:0; 
@@ -438,153 +353,16 @@
             border: none; 
             border-radius: var(--radius-sm); 
             cursor: pointer; 
-            font-weight: 600;
-            transition: all var(--trans);
-            box-shadow: var(--shadow-sm);
-        }
-        .btn-warning:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            background: linear-gradient(135deg,#d97706,var(--warning));
-        }
-        .btn-danger { 
-            background: linear-gradient(135deg,var(--danger),#dc2626);
-            color: white; 
-            padding: 12px 20px; 
-            border: none; 
-            border-radius: var(--radius-sm); 
-            cursor: pointer; 
-            font-weight: 600;
-            transition: all var(--trans);
-            box-shadow: var(--shadow-sm);
-        }
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            background: linear-gradient(135deg,#dc2626,var(--danger));
-        }
-        .btn-view {
-            background: var(--hover-bg);
-            color: var(--text);
-            padding: 8px 12px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all var(--trans);
-            margin-right: 8px;
-        }
-        .btn-view:hover {
-            background: var(--highlight);
-            border-color: var(--accent);
-        }
-        .btn-delete {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            padding: 8px 12px;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all var(--trans);
-            margin-right: 8px;
-        }
-        .btn-delete:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: var(--danger);
-        }
-        .btn-favorite {
-            background: transparent;
-            color: var(--warning);
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 4px;
-            transition: all var(--trans);
-        }
-        .btn-favorite:hover {
-            transform: scale(1.2);
-        }
-        .btn-favorite.is-favorited {
-            color: var(--warning);
-        }
-        .btn-archive {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent);
-            padding: 8px 12px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all var(--trans);
-            margin-right: 8px;
-        }
-        .btn-archive:hover {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: var(--accent);
-        }
-        .btn-unarchive {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            padding: 8px 12px;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all var(--trans);
-            margin-right: 8px;
-        }
-        .btn-unarchive:hover {
-            background: rgba(16, 185, 129, 0.2);
-            border-color: var(--success);
-        }
-        .btn-ban {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            padding: 8px 12px;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all var(--trans);
-        }
-        .btn-ban:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: var(--danger);
-        }
-        .btn-unban {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            padding: 8px 12px;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all var(--trans);
-        }
-        .btn-unban:hover {
-            background: rgba(16, 185, 129, 0.2);
-            border-color: var(--success);
-        }
-        .btn-delete-comment { 
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            padding: 4px 8px;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 12px;
-            transition: all var(--trans);
-        }
-        .btn-delete-comment:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: var(--danger);
+            float: right; 
+            margin-left: 10px;
         }
         
-        /* Profile Button Styling */
+        /* --- Profile Button Styling for Smaller Length and Curves --- */
         #profile-view .btn-primary,
-        #profile-view .btn-warning {
-            max-width: 250px;
+        #profile-view .btn-warning,
+        #profile-view .btn-danger {
+            /* Common styles for profile buttons */
+            max-width: 250px; /* Limits the length */
             margin-left: auto;
             margin-right: auto;
             display: block;
@@ -613,9 +391,19 @@
             margin-top: 10px; 
         }
         #profile-view .btn-warning:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            background-color: #d35400; 
         }
+
+        /* 3. Logout (Danger) Button - Red */
+        #profile-view .btn-danger { 
+            background-color: #e74c3c; /* Red */
+            color: white; 
+            margin-top: 20px; 
+        }
+        #profile-view .btn-danger:hover {
+            background-color: #c0392b; 
+        }
+
 
         /* Modal Styles */
         .modal { 
@@ -746,25 +534,13 @@
                 <div style="font-size:13px;color:rgba(255,255,255,0.7)">College Central</div>
             </div>
         </div>
-
-        <div class="profile" id="sidebar-user-card" role="region" aria-label="User profile">
-            <div class="profile-top">
-                <div class="profile-pic" id="sidebarPic">A</div>
-                <div class="profile-info">
-                    <div id="sidebarName">Admin</div>
-                </div>
-            </div>
-        </div>
-
-        <nav class="menu" role="navigation" aria-label="Sidebar menu">
-            <a href="#" id="dashboard-link" class="active" data-action="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard (Posts)</a>
-            <a href="#" id="favorites-link" data-action="favorites"><i class="fas fa-star"></i> Favorites (<span id="fav-count">0</span>)</a>
-            <a href="#" id="archive-link" data-action="archive"><i class="fas fa-archive"></i> Archive (<span id="archive-count">0</span>)</a>
-            <a href="#" id="users-link" data-action="users"><i class="fas fa-users"></i> User Management</a>
-            <a href="#" id="profile-link" data-action="profile"><i class="fas fa-user"></i> Profile</a>
-            <a href="#" id="settings-link" data-action="settings"><i class="fas fa-cog"></i> Settings</a>
-            <a href="#" id="logout-link" class="logout" data-action="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        </nav>
+        
+        <a href="#" id="dashboard-link" class="active">Dashboard (Posts)</a>
+        <a href="#" id="favorites-link">Favorites (<span id="fav-count">0</span>)</a>
+        <a href="#" id="users-link">User Management</a>
+        
+        <a href="#" id="profile-link">Profile</a>
+        <a href="#" id="settings-link">Settings</a>
     </div>
 
     <div class="main-content">
@@ -875,6 +651,12 @@
                 </div>
                 
                 <button id="save-settings-btn" class="btn-primary">Save Settings</button>
+            </div>
+            
+            <div class="card">
+                <h3>Maintenance Actions</h3>
+                <button id="archive-old-data-btn" class="btn-primary" style="background-color: #f39c12;">Archive Resolved Tickets</button>
+                <button id="clear-notifications-btn" class="btn-primary" style="background-color: #7f8c8d;">Clear Read Notifications</button>
             </div>
         </div>
 
@@ -1032,135 +814,11 @@
             if (savedSettings) {
                 adminSettings = JSON.parse(savedSettings);
             }
-            
-            // 3. Load Archived Posts
-            const savedArchivedPosts = localStorage.getItem('archivedPosts');
-            if (savedArchivedPosts) {
-                const archivedIds = JSON.parse(savedArchivedPosts);
-                // Mark posts as archived based on saved IDs
-                posts.forEach(post => {
-                    if (archivedIds.includes(post.id)) {
-                        post.isArchived = true;
-                    }
-                });
-                
-                // Update archive count immediately
-                $('archive-count').textContent = archivedIds.length;
-            }
         }
 
-        // ----------------------------------------------------------------------
-        //                  ANIMATED BACKGROUND
-        // ----------------------------------------------------------------------
-        
-        function createParticles() {
-            const particleCount = 20;
-            particles.innerHTML = '';
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('span');
-                particle.className = 'particle';
-                
-                // Random size
-                const size = Math.random() * 12 + 8;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                // Random position
-                const posX = Math.random() * 100;
-                particle.style.left = `${posX}%`;
-                
-                // Random animation delay and duration
-                const delay = Math.random() * 20;
-                const duration = Math.random() * 15 + 10;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.animationDuration = `${duration}s`;
-                
-                // Random color with higher opacity
-                const colors = [
-                    'rgba(59, 130, 246, 0.8)', 
-                    'rgba(16, 185, 129, 0.8)', 
-                    'rgba(139, 92, 246, 0.8)', 
-                    'rgba(245, 158, 11, 0.8)',
-                    'rgba(239, 68, 68, 0.8)'
-                ];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.background = color;
-                
-                particles.appendChild(particle);
-            }
-        }
-
-        function createShapes() {
-            const shapeCount = 8;
-            shapes.innerHTML = '';
-            
-            for (let i = 0; i < shapeCount; i++) {
-                const shape = document.createElement('div');
-                shape.className = 'shape';
-                
-                // Random size
-                const size = Math.random() * 200 + 100;
-                shape.style.width = `${size}px`;
-                shape.style.height = `${size}px`;
-                
-                // Random position
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                shape.style.left = `${posX}%`;
-                shape.style.top = `${posY}%`;
-                
-                // Random animation delay
-                const delay = Math.random() * 25;
-                shape.style.animationDelay = `${delay}s`;
-                
-                // Random color
-                const colors = [
-                    'rgba(59, 130, 246, 0.1)', 
-                    'rgba(16, 185, 129, 0.1)', 
-                    'rgba(139, 92, 246, 0.1)', 
-                    'rgba(245, 158, 11, 0.1)'
-                ];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                shape.style.background = `radial-gradient(circle, ${color}, transparent)`;
-                
-                shapes.appendChild(shape);
-            }
-        }
 
         // ----------------------------------------------------------------------
-        //                  THEME FUNCTIONS
-        // ----------------------------------------------------------------------
-        
-        function applyTheme() {
-            const body = document.body;
-            const themeToggle = $('#theme-toggle');
-            
-            if (adminSettings.darkMode) {
-                body.classList.add('dark');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                // Update gradient colors for dark mode
-                document.body.style.setProperty('--gradient-color-1', 'rgba(96, 165, 250, 0.25)');
-                document.body.style.setProperty('--gradient-color-2', 'rgba(52, 211, 153, 0.25)');
-                document.body.style.setProperty('--gradient-color-3', 'rgba(167, 139, 250, 0.25)');
-            } else {
-                body.classList.remove('dark');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                // Update gradient colors for light mode
-                document.body.style.setProperty('--gradient-color-1', 'rgba(59, 130, 246, 0.15)');
-                document.body.style.setProperty('--gradient-color-2', 'rgba(16, 185, 129, 0.15)');
-                document.body.style.setProperty('--gradient-color-3', 'rgba(139, 92, 246, 0.15)');
-            }
-        }
-
-        function toggleTheme() {
-            adminSettings.darkMode = !adminSettings.darkMode;
-            applyTheme();
-            localStorage.setItem('adminSettings', JSON.stringify(adminSettings));
-        }
-
-        // ----------------------------------------------------------------------
-        //                  VIEW SWITCHING
+        //                                VIEW SWITCHING
         // ----------------------------------------------------------------------
 
         function setActiveLink(clickedLink) {
@@ -1365,43 +1023,15 @@
                         <td><span class="${statusClass}">${post.status}</span></td>
                         <td>${post.user}</td>
                         <td>
-                            <button class="btn-view" data-action="view-post" data-post-id="${post.id}">View</button>
-                            <button class="btn-delete" data-action="delete-post" data-post-id="${post.id}">Delete</button>
-                            <button class="btn-favorite ${favClass}" data-action="toggle-favorite" data-post-id="${post.id}">${starIcon}</button>
-                            <button class="btn-archive" data-action="archive-post" data-post-id="${post.id}">Archive</button>
+                            <button class="action-btn btn-view" onclick="openDetailsModal(${post.id})">View</button>
+                            <button class="action-btn btn-delete" onclick="deletePost(${post.id})">Delete</button>
+                            <button class="btn-favorite ${favClass}" onclick="toggleFavorite(${post.id})">${starIcon}</button>
                         </td>
                     `;
                 }
             });
         }
-
-        function renderArchivedPosts() {
-            archiveTableBody.innerHTML = '';
-            const archivedPosts = posts.filter(p => p.isArchived);
-            $('archive-count').textContent = archivedPosts.length;
-            
-            archivedPosts.forEach(post => {
-                const row = archiveTableBody.insertRow();
-                let statusClass = `status-${post.status.toLowerCase().replace(' ', '-')}`;
-                const starIcon = post.isFavorite ? '★' : '☆'; 
-                const favClass = post.isFavorite ? 'is-favorited' : '';
-
-                row.innerHTML = `
-                    <td>${post.id}</td>
-                    <td>${post.subject}</td>
-                    <td><span class="${statusClass}">${post.status}</span></td>
-                    <td>${post.user}</td>
-                    <td>
-                        <button class="btn-view" data-action="view-post" data-post-id="${post.id}">View</button>
-                        <button class="btn-delete" data-action="delete-post" data-post-id="${post.id}">Delete</button>
-                        <button class="btn-favorite ${favClass}" data-action="toggle-favorite" data-post-id="${post.id}">${starIcon}</button>
-                        <button class="btn-unarchive" data-action="unarchive-post" data-post-id="${post.id}">Unarchive</button>
-                    </td>
-                `;
-            });
-        }
-
-        function toggleFavorite(postId) {
+        window.toggleFavorite = function(postId) {
             const post = posts.find(p => p.id === postId);
             if (post) {
                 post.isFavorite = !post.isFavorite; 
@@ -1417,83 +1047,7 @@
                 }
             }
         }
-
-        function archivePost(postId) {
-            const post = posts.find(p => p.id === postId);
-            if (post) {
-                post.isArchived = true;
-                
-                // Save archived post IDs to localStorage
-                const archivedIds = posts.filter(p => p.isArchived).map(p => p.id);
-                localStorage.setItem('archivedPosts', JSON.stringify(archivedIds));
-                
-                // Update archive count immediately
-                $('archive-count').textContent = archivedIds.length;
-                
-                // Re-render the dashboard to remove the archived post
-                renderPosts(posts);
-                
-                // Show a subtle notification instead of an alert
-                showNotification(`Post ${postId} has been archived.`);
-            }
-        }
-
-        function unarchivePost(postId) {
-            const post = posts.find(p => p.id === postId);
-            if (post) {
-                post.isArchived = false;
-                
-                // Save archived post IDs to localStorage
-                const archivedIds = posts.filter(p => p.isArchived).map(p => p.id);
-                localStorage.setItem('archivedPosts', JSON.stringify(archivedIds));
-                
-                // Update archive count immediately
-                $('archive-count').textContent = archivedIds.length;
-                
-                // Re-render the archive view to remove the unarchived post
-                renderArchivedPosts();
-                
-                // Show a subtle notification instead of an alert
-                showNotification(`Post ${postId} has been unarchived and is now visible in the main dashboard.`);
-            }
-        }
-
-        function showNotification(message) {
-            // Create a notification element
-            const notification = document.createElement('div');
-            notification.style.position = 'fixed';
-            notification.style.bottom = '20px';
-            notification.style.right = '20px';
-            notification.style.backgroundColor = 'var(--accent)';
-            notification.style.color = 'white';
-            notification.style.padding = '12px 20px';
-            notification.style.borderRadius = 'var(--radius-sm)';
-            notification.style.boxShadow = 'var(--shadow-lg)';
-            notification.style.zIndex = '1000';
-            notification.style.transform = 'translateY(100px)';
-            notification.style.opacity = '0';
-            notification.style.transition = 'all 0.3s ease';
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            // Animate in
-            setTimeout(() => {
-                notification.style.transform = 'translateY(0)';
-                notification.style.opacity = '1';
-            }, 10);
-            
-            // Remove after 3 seconds
-            setTimeout(() => {
-                notification.style.transform = 'translateY(100px)';
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }
-
-        function deletePost(postId) {
+        window.deletePost = function(postId) {
             if (!confirm('DANGER: Are you sure you want to delete this entire post? This action is not reversible.')) return;
             const postIndex = posts.findIndex(p => p.id === postId);
             if (postIndex !== -1) {
@@ -1532,39 +1086,6 @@
             );
             renderPosts(filteredPosts);
         }
-
-        function filterArchivedPosts() {
-            const searchTerm = $('archive-search-input').value.toLowerCase();
-            const filteredPosts = posts.filter(post => 
-                post.isArchived && (
-                post.subject.toLowerCase().includes(searchTerm) ||
-                post.content.toLowerCase().includes(searchTerm) ||
-                post.type.toLowerCase().includes(searchTerm)
-                )
-            );
-            
-            archiveTableBody.innerHTML = '';
-            filteredPosts.forEach(post => {
-                const row = archiveTableBody.insertRow();
-                let statusClass = `status-${post.status.toLowerCase().replace(' ', '-')}`;
-                const starIcon = post.isFavorite ? '★' : '☆'; 
-                const favClass = post.isFavorite ? 'is-favorited' : '';
-
-                row.innerHTML = `
-                    <td>${post.id}</td>
-                    <td>${post.subject}</td>
-                    <td><span class="${statusClass}">${post.status}</span></td>
-                    <td>${post.user}</td>
-                    <td>
-                        <button class="btn-view" data-action="view-post" data-post-id="${post.id}">View</button>
-                        <button class="btn-delete" data-action="delete-post" data-post-id="${post.id}">Delete</button>
-                        <button class="btn-favorite ${favClass}" data-action="toggle-favorite" data-post-id="${post.id}">${starIcon}</button>
-                        <button class="btn-unarchive" data-action="unarchive-post" data-post-id="${post.id}">Unarchive</button>
-                    </td>
-                `;
-            });
-        }
-
         function renderUsers(data) {
             userTableBody.innerHTML = '';
             data.forEach(user => {
@@ -1686,139 +1207,98 @@
             }
         }
 
-        // ----------------------------------------------------------------------
-        //                  EVENT DELEGATION
-        // ----------------------------------------------------------------------
-        document.addEventListener('click', function(e) {
-            const target = e.target;
-            const action = target.dataset.action;
-            
-            // Handle sidebar navigation
-            if (target.closest('.menu a')) {
-                e.preventDefault();
-                const link = target.closest('.menu a');
-                setActiveLink(link);
-                
-                const linkAction = link.dataset.action;
-                if (linkAction === 'dashboard') {
-                    showView('posts');
-                    renderPosts(posts);
-                } else if (linkAction === 'favorites') {
-                    showView('posts');
-                    const favoritePosts = posts.filter(p => p.isFavorite && !p.isArchived);
-                    renderPosts(favoritePosts);
-                    mainTitle.textContent = "My Favorite Tickets ⭐";
-                    mainDescription.textContent = "Quick access to tickets you've marked as important.";
-                } else if (linkAction === 'archive') {
-                    showView('archive');
-                } else if (linkAction === 'users') {
-                    showView('users');
-                } else if (linkAction === 'profile') {
-                    showView('profile');
-                } else if (linkAction === 'settings') {
-                    showView('settings');
-                } else if (linkAction === 'logout') {
-                    if (confirm('Are you sure you want to logout?')) {
-                        alert('Logging out... Thank you for your service!');
-                        // In a real app, this would clear the session and redirect to login
-                    }
+        window.archiveOldData = function() {
+            if (confirm("Are you sure you want to mock-archive resolved tickets? This will remove them from the dashboard view.")) {
+                const resolvedCount = posts.filter(p => p.status === 'Resolved').length;
+                if (resolvedCount === 0) {
+                    alert("No resolved tickets found to archive.");
+                    return;
                 }
+                posts = posts.filter(p => p.status !== 'Resolved');
+                renderPosts(posts);
+                alert(`${resolvedCount} ticket(s) have been successfully archived and removed from the dashboard.`);
+            }
+        }
+        window.clearReadNotifications = function() {
+            const readCount = notifications.filter(n => !n.unread).length;
+            if (readCount === 0) {
+                alert("No read notifications to clear.");
                 return;
             }
-            
-            // Handle modal close buttons
-            if (action === 'close-modal') {
-                target.closest('.modal').style.display = 'none';
-                return;
-            }
-            
-            // Handle post actions
-            if (action === 'view-post') {
-                const postId = parseInt(target.dataset.postId);
-                openDetailsModal(postId);
-                return;
-            }
-            
-            if (action === 'delete-post') {
-                const postId = parseInt(target.dataset.postId);
-                deletePost(postId);
-                return;
-            }
-            
-            if (action === 'toggle-favorite') {
-                const postId = parseInt(target.dataset.postId);
-                toggleFavorite(postId);
-                return;
-            }
-            
-            if (action === 'archive-post') {
-                const postId = parseInt(target.dataset.postId);
-                archivePost(postId);
-                return;
-            }
-            
-            if (action === 'unarchive-post') {
-                const postId = parseInt(target.dataset.postId);
-                unarchivePost(postId);
-                return;
-            }
-            
-            // Handle user actions
-            if (action === 'toggle-user-status') {
-                const userId = parseInt(target.dataset.userId);
-                toggleUserStatus(userId);
-                return;
-            }
-            
-            // Handle comment actions
-            if (action === 'delete-comment') {
-                const postId = parseInt(target.dataset.postId);
-                const commentId = parseInt(target.dataset.commentId);
-                deleteComment(postId, commentId);
-                return;
-            }
-            
-            // Handle notification clicks
-            if (target.closest('#notification-list li')) {
-                const li = target.closest('#notification-list li');
-                const notificationId = parseInt(li.dataset.notificationId);
-                markAsRead(notificationId);
-                return;
-            }
-        });
+            notifications = notifications.filter(n => n.unread);
+            renderNotifications();
+            alert(`${readCount} read notification(s) cleared.`);
+        }
+
 
         // ----------------------------------------------------------------------
-        //                  INITIALIZATION & EVENT LISTENERS
+        //                        INITIALIZATION & EVENT LISTENERS
         // ----------------------------------------------------------------------
+
         document.addEventListener('DOMContentLoaded', () => {
             
             // 1. LOAD PERSISTENT DATA FIRST
             loadPersistentData(); 
+            
+            // Apply theme setting immediately based on loaded data
+            applyTheme(); 
 
-            // Initialize animated background
-            createParticles();
-            createShapes();
+            // Attach Sidebar Handlers
+            $('dashboard-link').onclick = function(e) {
+                e.preventDefault();
+                setActiveLink(e.target);
+                showView('posts');
+                renderPosts(posts); // Show all posts
+            };
 
+            $('favorites-link').onclick = function(e) {
+                e.preventDefault();
+                setActiveLink(e.target);
+                const favoritePosts = posts.filter(p => p.isFavorite);
+                showView('posts');
+                renderPosts(favoritePosts); // Show only favorites
+                mainTitle.textContent = "My Favorite Tickets ⭐";
+                mainDescription.textContent = "Quick access to tickets you've marked as important.";
+            };
+
+            $('users-link').onclick = function(e) {
+                e.preventDefault();
+                setActiveLink(e.target);
+                showView('users');
+            };
+            
+            $('profile-link').onclick = function(e) {
+                e.preventDefault();
+                setActiveLink(e.target);
+                showView('profile');
+            };
+            
+            $('settings-link').onclick = function(e) {
+                e.preventDefault();
+                setActiveLink(e.target);
+                showView('settings'); 
+            };
+            
+            // --- ACTION BUTTON LISTENERS ---
+            logoutBtnProfile.onclick = function() {
+                alert('Logging out... Thank you for your service!');
+                // In a real app, this clears the session and redirects to login.
+            };
+            
+            // Reset Password Listener
+            resetPasswordBtn.addEventListener('click', handlePasswordReset);
+
+            $('notification-bell').onclick = openNotificationModal;
+            
             // --- PROFILE FUNCTIONALITY LISTENERS ---
             profilePicInput.addEventListener('change', handleProfilePictureChange);
             saveProfileBtn.addEventListener('click', saveProfileChanges);
             
             // --- SETTINGS FUNCTIONALITY LISTENERS ---
             saveSettingsBtn.addEventListener('click', saveAdminSettings);
+            $('archive-old-data-btn').addEventListener('click', archiveOldData);
+            $('clear-notifications-btn').addEventListener('click', clearReadNotifications);
             
-            // --- THEME TOGGLE LISTENER ---
-            $('#theme-toggle').addEventListener('click', toggleTheme);
-            
-            // --- NOTIFICATION BELL LISTENER ---
-            $('#notification-bell').addEventListener('click', openNotificationModal);
-            
-            // --- SEARCH INPUT LISTENERS ---
-            $('search-input').addEventListener('input', filterPosts);
-            $('user-search-input').addEventListener('input', filterUsers);
-            $('archive-search-input').addEventListener('input', filterArchivedPosts);
-            
-            // --- Reset Password Listener ---
-            resetPasswordBtn.addEventListener('click', handlePasswordReset);
             
             // --- Initial Render ---
             renderPosts(posts);
